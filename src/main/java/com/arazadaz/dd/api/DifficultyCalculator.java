@@ -14,7 +14,7 @@ public class DifficultyCalculator {
     }
 
     public enum DifficultyType {
-        ENVIROMENTAL,
+        ENVIRONMENTAL,
         SURFACE
     }
 
