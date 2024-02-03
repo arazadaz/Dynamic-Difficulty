@@ -22,7 +22,8 @@ public class DifficultyCalculator {
         ADDITION,
         SUBSTRACTION,
         MULTIPLY,
-        DIVIDE
+        DIVIDE,
+        REPLACE
     }
 
     public enum Direction{
@@ -71,6 +72,7 @@ public class DifficultyCalculator {
 
             case MULTIPLY -> {}
             case DIVIDE -> {}
+            case REPLACE -> {}
 
             default -> {}
         }
