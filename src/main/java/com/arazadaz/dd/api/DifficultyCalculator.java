@@ -4,14 +4,30 @@ package com.arazadaz.dd.api;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
+import java.util.function.Predicate;
+
 public class DifficultyCalculator {
 
-    enum Mode{
+    public enum RadiusMode {
         CIRCLE,
         SQUARE
     }
 
-    public static double getDifficulty(LivingEntity entity, Mode mode){
+    public enum ModifierMode{
+        ADDITION,
+        SUBSTRACTION,
+        MULTIPLY,
+        DIVIDE
+    }
+
+    public enum Direction{
+        NORTH,
+        EAST,
+        SOUTH,
+        WEST
+    }
+
+    public static double getDifficulty(LivingEntity entity, RadiusMode mode){
 
         switch(mode){
 
@@ -26,7 +42,7 @@ public class DifficultyCalculator {
     }
 
 
-    public static double getDifficulty(int x, int y, int z, Level level, Mode mode){
+    public static double getDifficulty(int x, int y, int z, Level level, RadiusMode mode){
 
         switch(mode){
 
@@ -38,6 +54,28 @@ public class DifficultyCalculator {
         }
 
 
+    }
+
+    public static void addDifficultyModifier(Predicate predicateCondition, ModifierMode mode){
+
+        switch(mode){
+
+            case ADDITION -> {}
+
+            case SUBSTRACTION -> {}
+
+            case MULTIPLY -> {}
+            case DIVIDE -> {}
+
+            default -> {}
+        }
+
+    }
+
+    public static Direction getDirectionNearestOrigin(int x, int y, int z, Level level){
+
+
+        return null;
     }
 
 }
