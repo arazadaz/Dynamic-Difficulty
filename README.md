@@ -1,7 +1,7 @@
 
 About
 =======
-A library mod for minecraft introducing a new difficulty system to the game.
+A library mod for minecraft introducing a new difficulty system to the game largely based off distance.
 
 Mapping Names:
 ============
