@@ -13,6 +13,11 @@ public class DifficultyCalculator {
         SQUARE
     }
 
+    public enum DifficultyType {
+        ENVIROMENTAL,
+        SURFACE
+    }
+
     public enum ModifierMode{
         ADDITION,
         SUBSTRACTION,
@@ -27,7 +32,7 @@ public class DifficultyCalculator {
         WEST
     }
 
-    public static double getDifficulty(LivingEntity entity, RadiusMode mode){
+    public static double getDifficulty(LivingEntity entity, DifficultyType type, RadiusMode mode){
 
         switch(mode){
 
@@ -42,7 +47,7 @@ public class DifficultyCalculator {
     }
 
 
-    public static double getDifficulty(int x, int y, int z, Level level, RadiusMode mode){
+    public static double getDifficulty(int x, int y, int z, Level level, DifficultyType type, RadiusMode mode){
 
         switch(mode){
 
@@ -56,7 +61,7 @@ public class DifficultyCalculator {
 
     }
 
-    public static void addDifficultyModifier(Predicate predicateCondition, ModifierMode mode){
+    public static void addDifficultyModifier(Predicate predicateCondition, DifficultyType type, ModifierMode mode){
 
         switch(mode){
 
