@@ -20,11 +20,4 @@ public class Modes {
         REPLACE
     }
 
-    public enum Direction{
-        NORTH,
-        EAST,
-        SOUTH,
-        WEST
-    }
-
 }

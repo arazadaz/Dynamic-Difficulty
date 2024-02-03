@@ -1,12 +1,10 @@
 package com.arazadaz.dd.api;
 
 
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import com.arazadaz.dd.api.Modes.DifficultyType;
-import com.arazadaz.dd.api.Modes.RadiusMode;
-import com.arazadaz.dd.api.Modes.ModifierMode;
-import com.arazadaz.dd.api.Modes.Direction;
+import com.arazadaz.dd.api.Modes.*;
 
 import java.util.function.Predicate;
 
