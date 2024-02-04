@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import com.arazadaz.dd.api.Modes.*;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
@@ -13,26 +14,23 @@ public class DifficultyCalculator {
 
     public static double getDifficultyHere(LivingEntity entity, DifficultyType type, RadiusMode rMode){ //Calculates from nearest origin
 
-        switch(rMode){
+        Vec3 pos = entity.position();
+        Level level = entity.level();
 
-            case CIRCLE -> {return 0;}
-
-            case SQUARE -> {return 0;}
-
-            default -> {return 0;}
-        }
-
+        return getDifficultyHere(pos, level, type, rMode);
 
     }
 
 
-    public static double getDifficultyHere(int x, int y, int z, Level level, DifficultyType type, RadiusMode rMode){ //Calculates from nearest origin
+    public static double getDifficultyHere(Vec3 pos, Level level, DifficultyType type, RadiusMode rMode){ //Calculates from nearest origin
 
         switch(rMode){
 
             case CIRCLE -> {return 0;}
 
             case SQUARE -> {return 0;}
+
+            case CUSTOM -> {return 0;}
 
             default -> {return 0;}
         }

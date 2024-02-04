@@ -4,7 +4,8 @@ public class Modes {
 
     public enum RadiusMode {
         CIRCLE,
-        SQUARE
+        SQUARE,
+        CUSTOM
     }
 
     public enum DifficultyType {

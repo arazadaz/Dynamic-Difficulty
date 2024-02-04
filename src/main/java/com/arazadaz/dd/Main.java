@@ -1,5 +1,6 @@
 package com.arazadaz.dd;
 
+import com.arazadaz.dd.config.Config;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
