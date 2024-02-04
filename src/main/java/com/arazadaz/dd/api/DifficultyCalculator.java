@@ -24,6 +24,7 @@ public class DifficultyCalculator {
 
     public static double getDifficultyHere(Vec3 pos, Level level, DifficultyType type, RadiusMode rMode){ //Calculates from nearest origin
 
+        //Needs to be able to gather origins from all worlds and world-specific origins
         switch(rMode){
 
             case CIRCLE -> {return 0;}

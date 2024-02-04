@@ -1,15 +1,20 @@
 package com.arazadaz.dd.api;
 
+import com.arazadaz.dd.core.Origin;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.HashMap;
 
 public class OriginManager {
 
     private static boolean useSpawnOrigin = true;
     private static boolean useUserOrigins = true;
 
+    private static HashMap<String, Origin> origins;
+
     public static void addOrigin(Vec3 pos, String[] formulas, String[] types, double range, boolean noCalculationBound){
 
-        addOrigin(pos, formulas, types, range, noCalculationBound, ""); //Empty string means all worlds
+        addOrigin(pos, formulas, types, range, noCalculationBound, "all");
 
     }
 
