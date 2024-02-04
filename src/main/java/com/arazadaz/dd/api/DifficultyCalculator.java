@@ -47,10 +47,10 @@ public class DifficultyCalculator {
 
     public static double getOriginDifficultyHere(int x, int y, int z, Level level, DifficultyType type, RadiusMode rMode){ //Calculates from nearest origin point of specific type
 
-        return getOriginDifficultyHere(x, y, z, level, type, rMode, "default"); //Spawn is origin 0, even if disabled
+        return getOriginDifficultyHere(x, y, z, level, type, rMode, "default"); //default is applied to user-defined origins/spawn automatically. Mods defined origins can apply it too and should unless they have a reason to omit it.
     }
 
-    public static double getOriginDifficultyHere(int x, int y, int z, Level level, DifficultyType type, RadiusMode rMode, String origin){ //Calculates from nearest origin point of specific type
+    public static double getOriginDifficultyHere(int x, int y, int z, Level level, DifficultyType type, RadiusMode rMode, String originType){ //Calculates from nearest origin point of specific type
 
         return 0;
     }
