@@ -6,12 +6,15 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@SuppressWarnings("ClassEscapesDefinedScope")
 public class OriginManager {
 
     private static boolean useSpawnOrigin = true;
     private static boolean useUserOrigins = true;
 
     private static HashMap<String, ArrayList<Origin>> originMap; //Mapping of origins to each world/all;
+
+
 
 
     public static OriginID addOrigin(Vec3 pos, String[] types){ //basic, less control
@@ -22,11 +25,13 @@ public class OriginManager {
         return addOrigin(pos, formulas, types, range, false, false, "all");
 
     }
-    public static OriginID addOrigin(Vec3 pos, String[] formulas, String[] types, double range, boolean noCalculationBound,  boolean omitDefaultType){ //Advanced, more control
+
+    public static OriginID addOrigin(Vec3 pos, String[] formulas, String[] types, double range, boolean noCalculationBound, boolean omitDefaultType){ //Advanced, more control
 
         return addOrigin(pos, formulas, types, range, noCalculationBound, omitDefaultType, "all");
 
     }
+
 
     public static OriginID addOrigin(Vec3 pos, String[] formulas, String types[], double range, boolean noCalculationBound,  boolean omitDefaultType, String world){ //Optional assignment of origin to a specific world
 
@@ -61,9 +66,13 @@ public class OriginManager {
         return new OriginID(world, newOrigin);
     }
 
+
+
     public static void removeOriginPoint(OriginID id){ //Should really only be done for dynamic origin points, but maybes there's a reason to use it on default types.
         originMap.get(id.world).remove(id.origin);
     }
+
+
 
     public static void disableSpawnOrigin(){ //Should be used if a mod has its own origin definition it wants to use instead or if it's disabled in config
         useSpawnOrigin = false;
@@ -72,6 +81,7 @@ public class OriginManager {
     public static void disableUserDefinedOrigins(){ //Should be used if a mod has multiple origin definitions it wants to use in place of user-defined ones
         useUserOrigins = false;
     }
+
 
 }
 
