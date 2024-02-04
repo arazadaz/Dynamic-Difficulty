@@ -40,11 +40,16 @@ public class DifficultyCalculator {
 
     public static double getWorldSpawnDifficultyHere(int x, int y, int z, Level level, DifficultyType type, RadiusMode rMode){ //Calculates from spawn origin(returning 0 if disabled)
 
-        return getOriginDifficultyHere(x, y, z, level, type, rMode, 0); //Spawn is origin 0, even if disabled
+        return getOriginDifficultyHere(x, y, z, level, type, rMode, "spawn");
 
     }
 
-    public static double getOriginDifficultyHere(int x, int y, int z, Level level, DifficultyType type, RadiusMode rMode, int origin){ //Calculates from a specific origin point(Can't imagine a use case for this outside fo spawn, but it exists)
+    public static double getOriginDifficultyHere(int x, int y, int z, Level level, DifficultyType type, RadiusMode rMode){ //Calculates from nearest origin point of specific type
+
+        return getOriginDifficultyHere(x, y, z, level, type, rMode, "default"); //Spawn is origin 0, even if disabled
+    }
+
+    public static double getOriginDifficultyHere(int x, int y, int z, Level level, DifficultyType type, RadiusMode rMode, String origin){ //Calculates from nearest origin point of specific type
 
         return 0;
     }
