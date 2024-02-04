@@ -32,9 +32,15 @@ public class OriginManager {
 
         String[] newTypes;
 
-        if(omitDefaultType){ //No modification
+        if(omitDefaultType){ //Assigns it a dynamic tag instead
 
-            newTypes = types;
+            newTypes = new String[types.length+1];
+
+            for(int i = 0; i<types.length; i++){
+                newTypes[i] = types[i];
+            }
+
+            newTypes[types.length] = "dynamic"; //Dynamic because I assume these are added as a way to avoid conflicts with regular origins, and I maybe plan to personally use them as generated origin points after the world was loaded.
 
         }else{ //Add default type to origin
 
