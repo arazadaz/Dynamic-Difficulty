@@ -9,7 +9,8 @@ public class Modes {
 
     public enum DifficultyType {
         ENVIRONMENTAL,
-        SURFACE
+        SURFACE,
+        SPECIAL
     }
 
     public enum ModifierMode{
