@@ -1,12 +1,12 @@
-package com.arazadaz.dd.api;
+package com.arazadaz.dd.api.origins;
 
+import com.arazadaz.dd.api.origins.OriginID;
 import com.arazadaz.dd.core.Origin;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@SuppressWarnings("ClassEscapesDefinedScope")
 public class OriginManager {
 
     private static boolean useSpawnOrigin = true;
@@ -82,17 +82,5 @@ public class OriginManager {
         useUserOrigins = false;
     }
 
-
-}
-
-class OriginID{
-
-    public String world;
-    public Origin origin;
-
-    public OriginID(String world, Origin origin){
-        this.world = world;
-        this.origin = origin;
-    }
 
 }
