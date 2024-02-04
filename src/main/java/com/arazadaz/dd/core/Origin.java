@@ -8,6 +8,7 @@ public class Origin {
     Vec3 pos;
     String formulas[]; //(for calculating from it(one for square and one for circle maybe), can be specified or uses a default formula)
     String types[];
+    String world; //which world the origin resides. null value means all worlds
     double range; //How far out formula takes into consideration. Can be specified or uses a default global range
     boolean noCalculationBound; //Allows for origin to calculate past 1 or 100%
 

@@ -7,7 +7,13 @@ public class OriginManager {
     private static boolean useSpawnOrigin = true;
     private static boolean useUserOrigins = true;
 
-    public static void addOrigin(Vec3 pos, String[] formulas, String types[], double range, boolean noCalculationBound){
+    public static void addOrigin(Vec3 pos, String[] formulas, String[] types, double range, boolean noCalculationBound){
+
+        addOrigin(pos, formulas, types, range, noCalculationBound, ""); //Empty string means all worlds
+
+    }
+
+    public static void addOrigin(Vec3 pos, String[] formulas, String types[], double range, boolean noCalculationBound, String world){ //Optional assignment of origin to a specific world
 
     }
 
