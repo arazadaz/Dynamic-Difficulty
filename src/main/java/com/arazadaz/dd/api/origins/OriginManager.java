@@ -31,31 +31,6 @@ public class OriginManager {
 
     public static OriginID registerOrigin(Vec3 pos, String[] formulas, String tags[], double range, boolean noCalculationBound, int defaultTag, String world){ //Optional assignment of origin to a specific world
 
-        String[] newTags;
-
-        //Add default type to origin or none if desired
-        if(defaultTag == 1){ //Default tag
-
-            newTags = new String[tags.length+1];
-            for(int i = 1; i<=tags.length; i++){
-                newTags[i] = tags[i];
-            }
-
-            newTags[0] = "default";
-
-        }else if(defaultTag == 2){ //Dynamic tag
-
-            newTags = new String[tags.length+1];
-            for(int i = 1; i<=tags.length; i++){
-                newTags[i] = tags[i];
-            }
-
-            newTags[0] = "dynamic"; //Dynamic because these are generally going to be used for generated origin points after the world was loaded.
-
-        }else{ //No default tag
-            newTags = tags; //Keep original tags, exists to prevent conflicts and in case a mod dev wants to specifically design how their origin point interacts with the game.
-        }
-
         ArrayList<Origin> originsList;
 
         if(originMap.containsKey(world)){
@@ -64,7 +39,7 @@ public class OriginManager {
             originsList = new ArrayList<Origin>();
         }
 
-        Origin newOrigin = new Origin(pos, formulas, newTags, range, noCalculationBound);
+        Origin newOrigin = new Origin(pos, formulas, tags, range, noCalculationBound, defaultTag);
         originsList.add(newOrigin);
         originMap.put(world, originsList);
         return new OriginID(world, newOrigin);
