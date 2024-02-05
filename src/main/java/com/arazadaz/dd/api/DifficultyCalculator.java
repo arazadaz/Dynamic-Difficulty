@@ -50,7 +50,7 @@ public class DifficultyCalculator {
 
     }
 
-    public static void addDifficultyModifier(Predicate predicateCondition, DifficultyType type, RadiusMode rMode, ModifierMode modMode){
+    public static void addDifficultyModifier(Predicate predicateCondition, DifficultyType type, RadiusMode rMode, ModifierMode modMode){ //Will register to DDvault
 
         switch(modMode){
 
