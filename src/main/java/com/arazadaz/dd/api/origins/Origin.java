@@ -1,13 +1,12 @@
 package com.arazadaz.dd.api.origins;
 
 import com.arazadaz.dd.api.Modes.*;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
 public class Origin {
 
     public Vec3 pos;
-    private String[] formulas; //(for calculating from it(one for square and one for circle maybe), can be specified or uses a default formula)
+    private String[] formulas; //(for calculating from it(one for each radius mode), can be specified or uses a default global formula)
     public String[] tags;
     private double range; //How far out formula takes into consideration. Can be specified or uses a default global range
     private boolean noCalculationBound; //Allows for origin to calculate past 1 or 100%
