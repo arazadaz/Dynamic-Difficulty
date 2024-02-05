@@ -1,6 +1,7 @@
 package com.arazadaz.dd.api.origins;
 
 import com.arazadaz.dd.api.origins.OriginID;
+import com.arazadaz.dd.core.DDVault;
 import com.arazadaz.dd.core.Origin;
 import net.minecraft.world.phys.Vec3;
 
@@ -9,11 +10,7 @@ import java.util.HashMap;
 
 public class OriginManager {
 
-    private static boolean useSpawnOrigin = true;
-    private static boolean useUserOrigins = true;
-
     private static HashMap<String, ArrayList<Origin>> originMap; //Mapping of origins to each world/all;
-
 
 
 
@@ -76,18 +73,26 @@ public class OriginManager {
 
 
 
-    public static void removeOriginPoint(OriginID id){ //Should really only be done for dynamic origin points, but maybes there's a reason to use it on default types.
+    public static void removeOriginPoint(OriginID id){ //Should really only be done for dynamic origin points, but maybes there's a reason to use it on default types outside of below methods.
         originMap.get(id.world).remove(id.origin);
     }
 
 
 
     public static void disableSpawnOrigin(){ //Should be used if a mod has its own origin definition it wants to use instead or if it's disabled in config
-        useSpawnOrigin = false;
+        removeOriginPoint(DDVault.spawnOrigin);
     }
 
     public static void disableUserDefinedOrigins(){ //Should be used if a mod has multiple origin definitions it wants to use in place of user-defined ones
-        useUserOrigins = false;
+
+        for(int i = 0; i<DDVault.userOrigins.size(); i++){
+
+            OriginID currentUDO = DDVault.userOrigins.get(i);
+
+            removeOriginPoint(currentUDO);
+
+        }
+
     }
 
 
