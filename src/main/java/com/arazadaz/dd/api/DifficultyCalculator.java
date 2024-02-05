@@ -2,8 +2,7 @@ package com.arazadaz.dd.api;
 
 
 import com.arazadaz.dd.api.origins.OriginManager;
-import com.arazadaz.dd.core.Origin;
-import net.minecraft.core.Direction;
+import com.arazadaz.dd.api.origins.Origin;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import com.arazadaz.dd.api.Modes.*;
@@ -13,25 +12,7 @@ import java.util.function.Predicate;
 
 public class DifficultyCalculator {
 
-
-    //Primary getter with overloaded methods below
-    public static double getOriginDifficultyHere(Vec3 pos, Level level, DifficultyType type, RadiusMode rMode, String originTag){ //Calculates from nearest origin point of specific type
-
-        String levelID = level.toString(); //Will have to debug this to see what value is given.
-
-        Origin originPoint = OriginManager.getNearestOrigin(levelID, originTag, pos);
-
-        return originPoint.getDifficultyHere(pos, type, rMode);
-
-    }
-
-
-
-
-
-
-
-
+    //Overloaded getters
     public static double getDifficultyHere(LivingEntity entity, DifficultyType type, RadiusMode rMode){ //Calculates from nearest origin
 
         Vec3 pos = entity.position();
@@ -57,6 +38,19 @@ public class DifficultyCalculator {
     }
 
 
+
+
+
+    //Primary getter
+    public static double getOriginDifficultyHere(Vec3 pos, Level level, DifficultyType type, RadiusMode rMode, String originTag){ //Calculates from nearest origin point of specific type
+
+        String levelID = level.toString(); //Will have to debug this to see what value is given.
+
+        Origin originPoint = OriginManager.getNearestOrigin(levelID, originTag, pos);
+
+        return originPoint.getDifficultyHere(pos, type, rMode);
+
+    }
 
 
 

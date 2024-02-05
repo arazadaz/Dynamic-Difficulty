@@ -1,4 +1,4 @@
-package com.arazadaz.dd.core;
+package com.arazadaz.dd.api.origins;
 
 import com.arazadaz.dd.api.Modes.*;
 import net.minecraft.world.entity.LivingEntity;

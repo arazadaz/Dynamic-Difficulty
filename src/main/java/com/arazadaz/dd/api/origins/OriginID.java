@@ -1,7 +1,5 @@
 package com.arazadaz.dd.api.origins;
 
-import com.arazadaz.dd.core.Origin;
-
 public class OriginID{
 
     public String world;

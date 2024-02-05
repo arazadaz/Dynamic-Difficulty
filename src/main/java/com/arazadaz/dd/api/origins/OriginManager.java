@@ -1,7 +1,6 @@
 package com.arazadaz.dd.api.origins;
 
 import com.arazadaz.dd.core.DDVault;
-import com.arazadaz.dd.core.Origin;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -69,6 +68,30 @@ public class OriginManager {
         originsList.add(newOrigin);
         originMap.put(world, originsList);
         return new OriginID(world, newOrigin);
+    }
+
+
+    public static OriginID registerOrigin(Origin origin){ //Advanced, more control
+
+        return registerOrigin(origin, "all");
+
+    }
+
+    public static OriginID registerOrigin(Origin origin, String world){ //Advanced, more control
+
+        ArrayList<Origin> originsList;
+
+        if(originMap.containsKey(world)){
+            originsList = originMap.get(world);
+        }else{
+            originsList = new ArrayList<Origin>();
+        }
+
+        originsList.add(origin);
+        originMap.put(world, originsList);
+
+        return new OriginID(world, origin);
+
     }
 
 
