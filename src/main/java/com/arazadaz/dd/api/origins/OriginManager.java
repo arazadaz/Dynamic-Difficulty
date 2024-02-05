@@ -1,12 +1,12 @@
 package com.arazadaz.dd.api.origins;
 
-import com.arazadaz.dd.api.origins.OriginID;
 import com.arazadaz.dd.core.DDVault;
 import com.arazadaz.dd.core.Origin;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class OriginManager {
 
@@ -14,23 +14,23 @@ public class OriginManager {
 
 
 
-    public static OriginID addOrigin(Vec3 pos, String[] tags){ //basic, less control
+    public static OriginID registerOrigin(Vec3 pos, String[] tags){ //basic, less control
 
         double range = 0; //Will get global value from config after it's setup
         String[] formulas = null; //will get global formulas from config after it's setup
 
-        return addOrigin(pos, formulas, tags, range, false, 1, "all");
+        return registerOrigin(pos, formulas, tags, range, false, 1, "all");
 
     }
 
-    public static OriginID addOrigin(Vec3 pos, String[] formulas, String[] tags, double range, boolean noCalculationBound, int defaultTag){ //Advanced, more control
+    public static OriginID registerOrigin(Vec3 pos, String[] formulas, String[] tags, double range, boolean noCalculationBound, int defaultTag){ //Advanced, more control
 
-        return addOrigin(pos, formulas, tags, range, noCalculationBound, defaultTag, "all");
+        return registerOrigin(pos, formulas, tags, range, noCalculationBound, defaultTag, "all");
 
     }
 
 
-    public static OriginID addOrigin(Vec3 pos, String[] formulas, String tags[], double range, boolean noCalculationBound,  int defaultTag, String world){ //Optional assignment of origin to a specific world
+    public static OriginID registerOrigin(Vec3 pos, String[] formulas, String tags[], double range, boolean noCalculationBound, int defaultTag, String world){ //Optional assignment of origin to a specific world
 
         String[] newTags;
 
@@ -92,6 +92,57 @@ public class OriginManager {
             removeOriginPoint(currentUDO);
 
         }
+
+    }
+
+
+    public static Origin getNearestOrigin(String world, String tag, Vec3 pos){
+
+        Iterator<Origin> it = originMap.get("all").iterator();
+
+        Origin nearestOrigin = it.next();
+
+        double nearestDistance = nearestOrigin.pos.distanceTo(pos);
+
+        while(it.hasNext()){
+            Origin currentOrigin = it.next();
+
+            boolean containsTag = false;
+            for(String currentTag : currentOrigin.tags){
+                if(currentTag.equals(tag)) containsTag=true;
+            }
+
+            if(!containsTag) continue;
+
+            double currentDistance = currentOrigin.pos.distanceTo(pos);
+
+            if(currentDistance<nearestDistance){
+                nearestDistance = currentDistance;
+                nearestOrigin = currentOrigin;
+            }
+        }
+
+        it = originMap.get(world).iterator();
+
+        while(it.hasNext()){
+            Origin currentOrigin = it.next();
+
+            boolean containsTag = false;
+            for(String currentTag : currentOrigin.tags){
+                if(currentTag.equals(tag)) containsTag=true;
+            }
+
+            if(!containsTag) continue;
+
+            double currentDistance = currentOrigin.pos.distanceTo(pos);
+
+            if(currentDistance<nearestDistance){
+                nearestDistance = currentDistance;
+                nearestOrigin = currentOrigin;
+            }
+        }
+
+        return nearestOrigin;
 
     }
 
