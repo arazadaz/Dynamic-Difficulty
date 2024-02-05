@@ -67,10 +67,4 @@ public class DifficultyCalculator {
 
     }
 
-    public static Direction getDirectionNearestOrigin(int x, int y, int z, Level level){
-
-
-        return null;
-    }
-
 }
