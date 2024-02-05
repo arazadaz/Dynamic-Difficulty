@@ -14,17 +14,7 @@ import java.util.function.Predicate;
 public class DifficultyCalculator {
 
 
-    public static double getDifficultyHere(LivingEntity entity, DifficultyType type, RadiusMode rMode){ //Calculates from nearest origin
-
-        Vec3 pos = entity.position();
-        Level level = entity.level();
-
-        return getDifficultyHere(pos, level, type, rMode);
-
-    }
-
-
-
+    //Primary getter with overloaded methods below
     public static double getOriginDifficultyHere(Vec3 pos, Level level, DifficultyType type, RadiusMode rMode, String originTag){ //Calculates from nearest origin point of specific type
 
         String levelID = level.toString(); //Will have to debug this to see what value is given.
@@ -32,6 +22,22 @@ public class DifficultyCalculator {
         Origin originPoint = OriginManager.getNearestOrigin(levelID, originTag, pos);
 
         return originPoint.getDifficultyHere(pos, type, rMode);
+
+    }
+
+
+
+
+
+
+
+
+    public static double getDifficultyHere(LivingEntity entity, DifficultyType type, RadiusMode rMode){ //Calculates from nearest origin
+
+        Vec3 pos = entity.position();
+        Level level = entity.level();
+
+        return getDifficultyHere(pos, level, type, rMode);
 
     }
 
@@ -50,6 +56,11 @@ public class DifficultyCalculator {
 
     }
 
+
+
+
+
+    //Precise control of difficulty with modifiers
     public static void addDifficultyModifier(Predicate predicateCondition, DifficultyType type, RadiusMode rMode, ModifierMode modMode){ //Will register to DDvault
 
         switch(modMode){
