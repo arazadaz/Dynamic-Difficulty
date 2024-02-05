@@ -17,39 +17,47 @@ public class OriginManager {
 
 
 
-    public static OriginID addOrigin(Vec3 pos, String[] types){ //basic, less control
+    public static OriginID addOrigin(Vec3 pos, String[] tags){ //basic, less control
 
         double range = 0; //Will get global value from config after it's setup
         String[] formulas = null; //will get global formulas from config after it's setup
 
-        return addOrigin(pos, formulas, types, range, false, false, "all");
+        return addOrigin(pos, formulas, tags, range, false, 1, "all");
 
     }
 
-    public static OriginID addOrigin(Vec3 pos, String[] formulas, String[] types, double range, boolean noCalculationBound, boolean omitDefaultType){ //Advanced, more control
+    public static OriginID addOrigin(Vec3 pos, String[] formulas, String[] tags, double range, boolean noCalculationBound, int defaultTag){ //Advanced, more control
 
-        return addOrigin(pos, formulas, types, range, noCalculationBound, omitDefaultType, "all");
+        return addOrigin(pos, formulas, tags, range, noCalculationBound, defaultTag, "all");
 
     }
 
 
-    public static OriginID addOrigin(Vec3 pos, String[] formulas, String types[], double range, boolean noCalculationBound,  boolean omitDefaultType, String world){ //Optional assignment of origin to a specific world
+    public static OriginID addOrigin(Vec3 pos, String[] formulas, String tags[], double range, boolean noCalculationBound,  int defaultTag, String world){ //Optional assignment of origin to a specific world
 
-        String[] newTypes = new String[types.length+1];;
+        String[] newTags;
 
-        for(int i = 1; i<=types.length; i++){
-            newTypes[i] = types[i];
-        }
+        //Add default type to origin or none if desired
+        if(defaultTag == 1){ //Default tag
 
+            newTags = new String[tags.length+1];
+            for(int i = 1; i<=tags.length; i++){
+                newTags[i] = tags[i];
+            }
 
-        if(omitDefaultType){ //Assigns it a dynamic tag instead
+            newTags[0] = "default";
 
-            newTypes[0] = "dynamic"; //Dynamic because I assume these are added as a way to avoid conflicts with regular origins, and I maybe plan to personally use them as generated origin points after the world was loaded.
+        }else if(defaultTag == 2){ //Dynamic tag
 
-        }else{ //Add default type to origin
+            newTags = new String[tags.length+1];
+            for(int i = 1; i<=tags.length; i++){
+                newTags[i] = tags[i];
+            }
 
-            newTypes[0] = "default";
+            newTags[0] = "dynamic"; //Dynamic because these are generally going to be used for generated origin points after the world was loaded.
 
+        }else{ //No default tag
+            newTags = tags; //Keep original tags, exists to prevent conflicts and in case a mod dev wants to specifically design how their origin point interacts with the game.
         }
 
         ArrayList<Origin> originsList;
@@ -60,7 +68,7 @@ public class OriginManager {
             originsList = new ArrayList<Origin>();
         }
 
-        Origin newOrigin = new Origin(pos, formulas, newTypes, range, noCalculationBound);
+        Origin newOrigin = new Origin(pos, formulas, newTags, range, noCalculationBound);
         originsList.add(newOrigin);
         originMap.put(world, originsList);
         return new OriginID(world, newOrigin);
