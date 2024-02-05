@@ -1,5 +1,6 @@
 package com.arazadaz.dd.api.origins;
 
+import com.arazadaz.dd.api.DDContext;
 import com.arazadaz.dd.api.Modes.*;
 import net.minecraft.world.phys.Vec3;
 
@@ -48,7 +49,7 @@ public class Origin {
 
 
     //Bulk of logic goes here
-    public double getDifficultyHere(Vec3 pos, DifficultyType type, RadiusMode rMode){
+    public double getDifficultyHere(Vec3 pos, DifficultyType type, RadiusMode rMode, DDContext context){
 
         switch(rMode){
 
