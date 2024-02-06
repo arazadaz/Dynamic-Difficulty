@@ -14,10 +14,25 @@ import java.util.function.Predicate;
 //Dynamic Difficulty Vault
 public class DDVault {
 
-    public static ArrayList<OriginID> userOrigins = new ArrayList<>();
-    public static OriginID spawnOrigin;
+    private DDVault singletonInstance;
 
-    public static HashMap<DifficultyType, ArrayList<Predicate<DDContext>> > difficultyModifiers;
+    public ArrayList<OriginID> userOrigins = new ArrayList<>();
+    public OriginID spawnOrigin;
+
+    public HashMap<DifficultyType, ArrayList<Predicate<DDContext>> > difficultyModifiers;
+
+
+    private DDVault(){
+
+    }
+
+    public DDVault createDDVault(){
+        if(singletonInstance!=null){
+            singletonInstance = new DDVault();
+            return singletonInstance;
+        }
+        else return null;
+    }
 
 
 }
