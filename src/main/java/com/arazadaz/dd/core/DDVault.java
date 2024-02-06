@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 //Dynamic Difficulty Vault
 public class DDVault {
 
-    private DDVault singletonInstance;
+    private static DDVault singletonInstance;
 
     public ArrayList<OriginID> userOrigins = new ArrayList<>();
     public OriginID spawnOrigin;
@@ -26,7 +26,7 @@ public class DDVault {
 
     }
 
-    public DDVault createDDVault(){
+    public static DDVault createDDVault(){
         if(singletonInstance!=null){
             singletonInstance = new DDVault();
             return singletonInstance;

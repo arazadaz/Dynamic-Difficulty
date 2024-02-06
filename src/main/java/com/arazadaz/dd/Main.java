@@ -1,6 +1,7 @@
 package com.arazadaz.dd;
 
 import com.arazadaz.dd.config.Config;
+import com.arazadaz.dd.core.DDVault;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -24,6 +25,7 @@ public class Main
 {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "dd";
+    public static final DDVault vault = DDVault.createDDVault();
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 

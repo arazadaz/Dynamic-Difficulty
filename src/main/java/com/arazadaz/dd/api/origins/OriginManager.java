@@ -1,5 +1,6 @@
 package com.arazadaz.dd.api.origins;
 
+import com.arazadaz.dd.Main;
 import com.arazadaz.dd.core.DDVault;
 import net.minecraft.world.phys.Vec3;
 
@@ -78,14 +79,14 @@ public class OriginManager {
 
 
     public static void disableSpawnOrigin(){ //Should be used if a mod has its own origin definition it wants to use instead or if it's disabled in config
-        removeOriginPoint(DDVault.spawnOrigin);
+        removeOriginPoint(Main.vault.spawnOrigin);
     }
 
     public static void disableUserDefinedOrigins(){ //Should be used if a mod has multiple origin definitions it wants to use in place of user-defined ones
 
-        for(int i = 0; i<DDVault.userOrigins.size(); i++){
+        for(int i = 0; i<Main.vault.userOrigins.size(); i++){
 
-            OriginID currentUDO = DDVault.userOrigins.get(i);
+            OriginID currentUDO = Main.vault.userOrigins.get(i);
 
             removeOriginPoint(currentUDO);
 
