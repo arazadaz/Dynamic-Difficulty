@@ -8,7 +8,7 @@ public class Origin {
 
     public Vec3 pos;
     private String[] formulas; //(for calculating from it(one for each radius mode), can be specified or uses a default global formula)
-    public String[] tags;
+    public String[] tags; //Non-unique identifier for the origin(Use modid+tag to allow for specific behavior, otherwise omit your mod id and keep it generic)
     private double range; //How far out formula takes into consideration. Can be specified or uses a default global range
     private boolean noCalculationBound; //Allows for origin to calculate past 1 or 100%
 
@@ -50,6 +50,9 @@ public class Origin {
 
     //Bulk of logic goes here
     public double getDifficultyHere(Vec3 pos, DifficultyType type, RadiusMode rMode, DDContext context){
+
+        context.srcOrigin = this;
+        context.dstPos = pos;
 
         switch(rMode){
 

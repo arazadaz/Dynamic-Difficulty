@@ -2,6 +2,7 @@ package com.arazadaz.dd.api.origins;
 
 import com.arazadaz.dd.Main;
 import com.arazadaz.dd.core.DDVault;
+import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -143,6 +144,17 @@ public class OriginManager {
 
         return nearestOrigin;
 
+    }
+
+    public static Direction getNearestOriginDirection(String world, String tag, Vec3 pos){
+
+        Origin target = getNearestOrigin(world, tag, pos);
+
+        Vec3 targetPos = target.pos;
+
+        //Math stuff to return correct direction.
+
+        return Direction.NORTH;
     }
 
 
