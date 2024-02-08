@@ -1,6 +1,7 @@
 package com.arazadaz.dd.api;
 
 
+import com.arazadaz.dd.Main;
 import com.arazadaz.dd.api.origins.OriginManager;
 import com.arazadaz.dd.api.origins.Origin;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,30 +49,20 @@ public class DifficultyCalculator {
 
         String levelID = level.toString(); //Will have to debug this to see what value is given.
 
-        Origin originPoint = OriginManager.getNearestOrigin(levelID, originTag, pos);
+        Origin origin = OriginManager.getNearestOrigin(levelID, originTag, pos);
 
-        return originPoint.getDifficultyHere(pos, type, rMode, new DDContext(entity.orElse(null)));
+        return origin.getDifficultyHere(pos, type, rMode, new DDContext(entity.orElse(null)));
 
     }
 
 
 
     //Precise control of difficulty with modifiers
-    public static void addDifficultyModifier(Predicate<DDContext> predicateCondition, DifficultyType type, RadiusMode rMode, ModifierMode modMode){ //Will register to DDvault
+    public static void addDifficultyModifier(Predicate<DDContext> predicateCondition, DifficultyType type, ModifierMode modMode, double value){ //Will register to DDvault
 
-        switch(modMode){
+        DifficultyModifier modifier = new DifficultyModifier(predicateCondition, modMode, value);
 
-            case ADDITION -> {}
-
-            case SUBSTRACTION -> {}
-
-            case MULTIPLY -> {}
-            case DIVIDE -> {}
-            case REPLACE -> {}
-
-            default -> {}
-        }
-
+        Main.vault.difficultyModifiers.get(type).add(modifier);
     }
 
 }

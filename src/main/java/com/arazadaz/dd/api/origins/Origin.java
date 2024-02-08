@@ -1,8 +1,14 @@
 package com.arazadaz.dd.api.origins;
 
+import com.arazadaz.dd.Main;
 import com.arazadaz.dd.api.DDContext;
+import com.arazadaz.dd.api.DifficultyModifier;
 import com.arazadaz.dd.api.Modes.*;
+import com.arazadaz.dd.config.Config;
+import com.arazadaz.dd.core.FormulaInterpreter;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.Iterator;
 
 public class Origin {
 
@@ -52,19 +58,46 @@ public class Origin {
     public double getDifficultyHere(Vec3 pos, DifficultyType type, RadiusMode rMode, DDContext context){
 
         context.srcOrigin = this;
+        context.difficultyType = type;
+        context.rMode = rMode;
         context.dstPos = pos;
+
+        Iterator<DifficultyModifier> modifierIterator = Main.vault.difficultyModifiers.get(type).iterator();
+        double difficulty;
 
         switch(rMode){
 
-            case CIRCLE -> {return 0;}
+            case CIRCLE -> {
+                difficulty = runModifiers(modifierIterator, context, 0);
+                return difficulty;
+            }
 
-            case SQUARE -> {return 0;}
+            case SQUARE -> {
+                difficulty = runModifiers(modifierIterator, context, 1);
+                return difficulty;
+            }
 
-            case CUSTOM -> {return 0;}
+            case CUSTOM -> {
+                difficulty = runModifiers(modifierIterator, context, 2);
+                return difficulty;
+            }
 
-            default -> {return 0;}
+            default -> {return 0;} //Should never occur
         }
 
+    }
+
+    private double runModifiers(Iterator<DifficultyModifier> modifierIterator, DDContext context, int formula){ //Formula can be 0, 1, or 2 with those values representing circle, square, and custom respectively.
+        double base = new FormulaInterpreter().run(Config.formulas[formula], this, pos);
+
+        while(modifierIterator.hasNext()){
+            DifficultyModifier modifier = modifierIterator.next();
+            if(modifier.shouldRun.test(context)){
+                base = modifier.runModifier(base);
+            }
+        }
+
+        return base;
     }
 
     public boolean isWorldSpawnOrigin(){

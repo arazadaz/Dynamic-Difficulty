@@ -40,7 +40,7 @@ public class Config
 
     public static final ModConfigSpec.ConfigValue<String> GLOBAL_FORMULAS = BUILDER
             .comment("The default formulas used for Origins if the values weren't specified at their creation. Three formulas: circle, square, and custom in that order")
-            .define("Global formulas", "distance/range, max(abs(dstPos.x-srcPos.x)/range, abs(dstPos.y-srcPos.y)/range, 50/100");
+            .define("Global formulas", "'distance/range', 'max(abs(dstPos.x-srcPos.x)/range', abs(dstPos.y-srcPos.y)/range, '50/100'");
 
     // a list of strings that are treated as resource locations for items
     private static final ModConfigSpec.ConfigValue<List<? extends String>> USER_DEFINED_ORIGINS = BUILDER
@@ -55,7 +55,7 @@ public class Config
 
     //Global values
     public static int range;
-    public static String formulas;
+    public static String[] formulas;
 
     private static boolean validateOriginEntry(final Object obj)
     {
@@ -87,7 +87,7 @@ public class Config
         useSpawnOrigin = SPAWN_TOGGLE.get();
         useUserDefinedOrigins = UDO_TOGGLE.get();
         range = GLOBAL_RANGE.get();
-        formulas = GLOBAL_FORMULAS.get();
+        formulas = GLOBAL_FORMULAS.get().split(",(?=(?:[^\']*\'[^\']*\')*[^\']*$)", -1);
 
         // convert the list of strings into a set of items
 

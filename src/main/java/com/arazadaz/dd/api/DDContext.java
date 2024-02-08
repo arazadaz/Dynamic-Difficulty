@@ -11,6 +11,8 @@ public class DDContext {
 
     public LivingEntity entity;
     public Origin srcOrigin;
+    public Modes.DifficultyType difficultyType;
+    public Modes.RadiusMode rMode;
     public Vec3 dstPos;
 
     public DDContext(@Nullable LivingEntity entity){
