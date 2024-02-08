@@ -69,6 +69,7 @@ public class Config
 
         switch(args.length){
 
+            case 0 -> {} //Do nothing
             case 3 -> {
                 Vec3 srcPos = new Vec3(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
                 OriginID userOrigin = OriginManager.registerOrigin(srcPos, new String[]{"userOrigin"});
