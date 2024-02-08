@@ -150,7 +150,7 @@ public class OriginManager {
 
         Origin target = getNearestOrigin(world, tag, pos);
 
-        Vec3 targetPos = target.pos;
+        Vec3 srcPos = target.pos;
 
         //Math stuff to return correct direction.
 
