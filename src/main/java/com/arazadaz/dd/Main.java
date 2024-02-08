@@ -1,11 +1,16 @@
 package com.arazadaz.dd;
 
+import com.arazadaz.dd.api.origins.OriginID;
+import com.arazadaz.dd.api.origins.OriginManager;
 import com.arazadaz.dd.config.Config;
 import com.arazadaz.dd.core.DDVault;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.LevelData;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -65,6 +70,16 @@ public class Main
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
+        LevelData data = event.getServer().getLevel(Level.OVERWORLD).getLevel().getLevelData();
+
+        Vec3 spawnVec = new Vec3(data.getXSpawn(), data.getYSpawn(), data.getZSpawn());
+
+        if(Config.useSpawnOrigin) {
+            OriginID spawnOrigin = OriginManager.registerOrigin(spawnVec, "spawn");
+            vault.userOrigins.add(spawnOrigin);
+        }
+
+
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent

@@ -24,23 +24,9 @@ public class Origin {
 
         //Add default type to origin or none if desired
         if(defaultTag == 1){ //Default tag
-
-            newTags = new String[tags.length+1];
-            for(int i = 1; i<=tags.length; i++){
-                newTags[i] = tags[i];
-            }
-
-            newTags[0] = "default";
-
+            newTags = injectDefaultTag(tags, "default");
         }else if(defaultTag == 2){ //Dynamic tag
-
-            newTags = new String[tags.length+1];
-            for(int i = 1; i<=tags.length; i++){
-                newTags[i] = tags[i];
-            }
-
-            newTags[0] = "dynamic"; //Dynamic because these are generally going to be used for generated origin points after the world was loaded.
-
+            newTags = injectDefaultTag(tags, "dynamic"); //Dynamic because these are generally going to be used for generated origin points after the world was loaded.
         }else{ //No default tag
             newTags = tags; //Keep original tags, exists to prevent conflicts and in case a mod dev wants to specifically design how their origin point interacts with the game.
         }
@@ -51,6 +37,18 @@ public class Origin {
         this.range = range;
         this.noCalculationBound = noCalculationBound;
 
+    }
+
+    private String[] injectDefaultTag(String[] originalTags, String tag){
+
+        String[] newTags = new String[originalTags.length+1];
+        for(int i = 1; i<=originalTags.length; i++){
+            newTags[i] = originalTags[i-1];
+        }
+
+        newTags[0] = tag; //On top since it'll be checked most probably
+
+        return newTags;
     }
 
 
@@ -69,22 +67,27 @@ public class Origin {
 
             case CIRCLE -> {
                 difficulty = runModifiers(modifierIterator, context, 0);
-                return difficulty;
+                return getFinalDifficulty(difficulty);
             }
 
             case SQUARE -> {
                 difficulty = runModifiers(modifierIterator, context, 1);
-                return difficulty;
+                return getFinalDifficulty(difficulty);
             }
 
             case CUSTOM -> {
                 difficulty = runModifiers(modifierIterator, context, 2);
-                return difficulty;
+                return getFinalDifficulty(difficulty);
             }
 
             default -> {return 0;} //Should never occur
         }
 
+    }
+
+    private double getFinalDifficulty(double finalDifficulty){
+        finalDifficulty = noCalculationBound ? finalDifficulty : Math.min(1, finalDifficulty);
+        return finalDifficulty;
     }
 
     private double runModifiers(Iterator<DifficultyModifier> modifierIterator, DDContext context, int formula){ //Formula can be 0, 1, or 2 with those values representing circle, square, and custom respectively.

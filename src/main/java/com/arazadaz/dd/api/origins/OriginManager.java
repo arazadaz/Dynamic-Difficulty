@@ -11,11 +11,11 @@ import java.util.Iterator;
 
 public class OriginManager {
 
-    private static HashMap<String, ArrayList<Origin>> originMap; //Mapping of origins to each world/all;
+    private static HashMap<String, ArrayList<Origin>> originMap = new HashMap<>(); //Mapping of origins to each world/all;
 
 
 
-    public static OriginID registerOrigin(Vec3 pos, String[] tags){ //basic, less control
+    public static OriginID registerOrigin(Vec3 pos, String... tags){ //basic, less control
 
         double range = 0; //Will get global value from config after it's setup
         String[] formulas = null; //will get global formulas from config after it's setup

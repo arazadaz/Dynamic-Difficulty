@@ -72,7 +72,7 @@ public class Config
             case 1 -> {} //Do nothing
             case 3 -> {
                 Vec3 srcPos = new Vec3(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
-                OriginID userOrigin = OriginManager.registerOrigin(srcPos, new String[]{"userOrigin"});
+                OriginID userOrigin = OriginManager.registerOrigin(srcPos, "userOrigin");
 
                 Main.vault.userOrigins.add(userOrigin);
             }

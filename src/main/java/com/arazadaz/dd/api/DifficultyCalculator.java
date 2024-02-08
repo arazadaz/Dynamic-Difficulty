@@ -47,7 +47,7 @@ public class DifficultyCalculator {
     //Primary getter
     public static double getOriginDifficultyHere(Vec3 pos, Level level, DifficultyType type, RadiusMode rMode, String originTag, Optional<LivingEntity> entity){ //Calculates from nearest origin point of specific type
 
-        String levelID = level.toString(); //Will have to debug this to see what value is given.
+        String levelID = level.dimension().location().getPath();
 
         Origin origin = OriginManager.getNearestOrigin(levelID, originTag, pos);
 
