@@ -69,7 +69,7 @@ public class Config
 
         switch(args.length){
 
-            case 0 -> {} //Do nothing
+            case 1 -> {} //Do nothing
             case 3 -> {
                 Vec3 srcPos = new Vec3(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
                 OriginID userOrigin = OriginManager.registerOrigin(srcPos, new String[]{"userOrigin"});
@@ -77,7 +77,7 @@ public class Config
                 Main.vault.userOrigins.add(userOrigin);
             }
 
-            default -> throw new IllegalStateException("Unexpected value: " + originSpec.length());
+            default -> throw new IllegalStateException("Unexpected value: " + args.length);
         }
     }
 

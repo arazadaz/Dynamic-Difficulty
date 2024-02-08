@@ -27,7 +27,7 @@ public class DDVault {
     }
 
     public static DDVault createDDVault(){
-        if(singletonInstance!=null){
+        if(singletonInstance==null){
             singletonInstance = new DDVault();
             return singletonInstance;
         }
