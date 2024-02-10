@@ -22,10 +22,17 @@ public class DDCommands {
 
         CommandSourceStack src = context.getSource();
         String world = src.getLevel().dimension().location().getPath();
+        Origin origin;
 
-        String[] args = context.getArgument("args", String.class).split(" ");
+        int numArguments = context.getInput().split(" ").length -1;
+        if(numArguments==1){
+            String type = context.getArgument("type", String.class);
+            origin = OriginManager.getNearestOrigin(world, type, src.getPosition());
+        }else{
+            origin = OriginManager.getNearestOrigin(world, "default", src.getPosition());
+        }
 
-        Origin origin = OriginManager.getNearestOrigin(world, "default", src.getPosition());
+
 
         double calculatedDifficulty = DifficultyCalculator.getOriginDifficultyHere(origin, src.getPosition(), Modes.DifficultyType.SURFACE, Modes.RadiusMode.SQUARE, Optional.empty());
         DecimalFormat df = new DecimalFormat("###.##");
@@ -46,18 +53,18 @@ public class DDCommands {
 
         CommandSourceStack src = context.getSource();
         String world = src.getLevel().dimension().location().getPath();
-
-        String[] args = context.getArgument("args", String.class).split(" ");
-
         Origin origin;
-        if(args.length == 1){
-             origin = new Origin(src.getPosition(), Config.formulas, new String[]{args[0]}, Config.range, false, 2, world);
+
+        int numArguments = context.getInput().split(" ").length -1;
+        if(numArguments == 1){
+            String type = context.getArgument("type", String.class);
+            origin = new Origin(src.getPosition(), Config.formulas, new String[]{type}, Config.range, false, 2, world);
         }else{
             origin = new Origin(src.getPosition(), Config.formulas, new String[]{}, Config.range, false, 2, world);
         }
 
 
-
+        OriginManager.registerOrigin(origin);
 
         String chatMessage = "Registered new origin\n"
                 + "\n"
@@ -75,7 +82,7 @@ public class DDCommands {
         dispatcher.register(Commands.literal("getNearestOriginInfo").requires(commandSource ->
             commandSource.hasPermission(3))
             .executes(DDCommands::getNearestOriginInfo)
-                .then(Commands.argument("args", StringArgumentType.word())
+                .then(Commands.argument("type", StringArgumentType.word())
                 .executes(DDCommands::getNearestOriginInfo)));
 
 
@@ -84,7 +91,7 @@ public class DDCommands {
         dispatcher.register((Commands.literal("createOrigin").requires(commandSource ->
                 commandSource.hasPermission(3))
                 .executes(DDCommands::registerNewOrigin))
-                    .then(Commands.argument("args", StringArgumentType.word())
+                    .then(Commands.argument("type", StringArgumentType.word())
                     .executes(DDCommands::registerNewOrigin)));
     }
 
