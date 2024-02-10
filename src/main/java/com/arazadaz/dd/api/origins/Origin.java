@@ -92,17 +92,17 @@ public class Origin {
         switch(rMode){
 
             case CIRCLE -> {
-                difficulty = runModifiers(modifierIterator, context, 0, dstPos);
+                difficulty = getDifficultyAndRunModifiers(modifierIterator, context, 0, dstPos);
                 return getFinalDifficulty(difficulty);
             }
 
             case SQUARE -> {
-                difficulty = runModifiers(modifierIterator, context, 1, dstPos);
+                difficulty = getDifficultyAndRunModifiers(modifierIterator, context, 1, dstPos);
                 return getFinalDifficulty(difficulty);
             }
 
             case CUSTOM -> {
-                difficulty = runModifiers(modifierIterator, context, 2, dstPos);
+                difficulty = getDifficultyAndRunModifiers(modifierIterator, context, 2, dstPos);
                 return getFinalDifficulty(difficulty);
             }
 
@@ -116,7 +116,7 @@ public class Origin {
         return finalDifficulty;
     }
 
-    private double runModifiers(Iterator<DifficultyModifier> modifierIterator, DDContext context, int formula, Vec3 dstPos){ //Formula can be 0, 1, or 2 with those values representing circle, square, and custom respectively.
+    private double getDifficultyAndRunModifiers(Iterator<DifficultyModifier> modifierIterator, DDContext context, int formula, Vec3 dstPos){ //Formula can be 0, 1, or 2 with those values representing circle, square, and custom respectively.
         double base = new FormulaInterpreter().run(this.formulas[formula], this, dstPos);
 
         while(modifierIterator.hasNext()){

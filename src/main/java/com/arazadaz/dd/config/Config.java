@@ -34,7 +34,7 @@ public class Config
 
     public static final ModConfigSpec.ConfigValue<String> GLOBAL_FORMULAS = BUILDER
             .comment("The default formulas used for Origins if the values weren't specified at their creation. Three formulas: circle, square, and custom in that order")
-            .define("Global formulas", "'(distance/range)*100', 'max(abs(dst.x-src.x)/range*100, abs(dst.y-src.y)/range*100)', '(50/100)*100'");
+            .define("Global formulas", "'(distance/range)*100', 'max(abs(dst.x-src.x)/range*100, abs(dst.z-src.z)/range*100)', '(50/100)*100'");
 
     // a list of strings that are treated as resource locations for items
     private static final ModConfigSpec.ConfigValue<List<? extends String>> USER_DEFINED_ORIGINS = BUILDER
