@@ -1,11 +1,12 @@
 package com.arazadaz.dd.api.origins;
 
 import com.arazadaz.dd.Main;
-import com.arazadaz.dd.core.DDVault;
+import com.arazadaz.dd.config.Config;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -17,8 +18,8 @@ public class OriginManager {
 
     public static OriginID registerOrigin(Vec3 pos, String... tags){ //basic, less control
 
-        double range = 0; //Will get global value from config after it's setup
-        String[] formulas = null; //will get global formulas from config after it's setup
+        double range = Config.range;
+        String[] formulas = Config.formulas; //will get global formulas from config after it's setup
 
         return registerOrigin(pos, formulas, tags, range, false, 1, "all");
 
@@ -41,7 +42,7 @@ public class OriginManager {
             originsList = new ArrayList<Origin>();
         }
 
-        Origin newOrigin = new Origin(pos, formulas, tags, range, noCalculationBound, defaultTag);
+        Origin newOrigin = new Origin(pos, formulas, tags, range, noCalculationBound, defaultTag, world);
         originsList.add(newOrigin);
         originMap.put(world, originsList);
         return new OriginID(world, newOrigin);
@@ -122,7 +123,7 @@ public class OriginManager {
             }
         }
 
-        it = originMap.get(world).iterator();
+        it = originMap.get(world)!= null ? originMap.get(world).iterator() : Collections.emptyIterator();
 
         while(it.hasNext()){
             Origin currentOrigin = it.next();

@@ -4,8 +4,8 @@ import com.arazadaz.dd.Main;
 import com.arazadaz.dd.api.DDContext;
 import com.arazadaz.dd.api.DifficultyModifier;
 import com.arazadaz.dd.api.Modes.*;
-import com.arazadaz.dd.config.Config;
 import com.arazadaz.dd.core.FormulaInterpreter;
+import com.arazadaz.dd.utilities.ShuntingYard;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Iterator;
@@ -18,7 +18,9 @@ public class Origin {
     private double range; //How far out formula takes into consideration. Can be specified or uses a default global range
     private boolean noCalculationBound; //Allows for origin to calculate past 1 or 100%
 
-    public Origin(Vec3 pos, String[] formulas, String[] tags, double range, boolean noCalculationBound, int defaultTag){
+    public String world;
+
+    public Origin(Vec3 pos, String[] formulas, String[] tags, double range, boolean noCalculationBound, int defaultTag, String world){
 
         String[] newTags;
 
@@ -31,11 +33,18 @@ public class Origin {
             newTags = tags; //Keep original tags, exists to prevent conflicts and in case a mod dev wants to specifically design how their origin point interacts with the game.
         }
 
+        String[] newRPNFormulas = new String[formulas.length];
+        for(int i = 0; i<formulas.length; i++) {
+            String newRPNFormula = ShuntingYard.infixToRpn(formulas[i]);
+            newRPNFormulas[i] = newRPNFormula;
+        }
+
         this.pos = pos;
-        this.formulas = formulas;
+        this.formulas = newRPNFormulas;
         this.tags = newTags;
         this.range = range;
         this.noCalculationBound = noCalculationBound;
+        this.world = world;
 
     }
 
@@ -51,14 +60,31 @@ public class Origin {
         return newTags;
     }
 
+    private String[] injectTag(String[] originalTags, String tag){
+
+        String[] newTags = new String[originalTags.length+1];
+        for(int i = 0; i<=originalTags.length; i++){
+            newTags[i] = originalTags[i];
+        }
+
+        newTags[originalTags.length] = tag; //On top since it'll be checked most probably
+
+        this.tags = newTags;
+
+        return newTags;
+
+    }
+
+    //TODO add universal tag injector(injects to all origins with predicate condition of type of that origin instance)
+
 
     //Bulk of logic goes here
-    public double getDifficultyHere(Vec3 pos, DifficultyType type, RadiusMode rMode, DDContext context){
+    public double getDifficultyHere(Vec3 dstPos, DifficultyType type, RadiusMode rMode, DDContext context){
 
         context.srcOrigin = this;
         context.difficultyType = type;
         context.rMode = rMode;
-        context.dstPos = pos;
+        context.dstPos = dstPos;
 
         Iterator<DifficultyModifier> modifierIterator = Main.vault.difficultyModifiers.get(type).iterator();
         double difficulty;
@@ -66,17 +92,17 @@ public class Origin {
         switch(rMode){
 
             case CIRCLE -> {
-                difficulty = runModifiers(modifierIterator, context, 0);
+                difficulty = runModifiers(modifierIterator, context, 0, dstPos);
                 return getFinalDifficulty(difficulty);
             }
 
             case SQUARE -> {
-                difficulty = runModifiers(modifierIterator, context, 1);
+                difficulty = runModifiers(modifierIterator, context, 1, dstPos);
                 return getFinalDifficulty(difficulty);
             }
 
             case CUSTOM -> {
-                difficulty = runModifiers(modifierIterator, context, 2);
+                difficulty = runModifiers(modifierIterator, context, 2, dstPos);
                 return getFinalDifficulty(difficulty);
             }
 
@@ -86,12 +112,12 @@ public class Origin {
     }
 
     private double getFinalDifficulty(double finalDifficulty){
-        finalDifficulty = noCalculationBound ? finalDifficulty : Math.min(1, finalDifficulty);
+        finalDifficulty = noCalculationBound ? finalDifficulty : Math.min(100, finalDifficulty);
         return finalDifficulty;
     }
 
-    private double runModifiers(Iterator<DifficultyModifier> modifierIterator, DDContext context, int formula){ //Formula can be 0, 1, or 2 with those values representing circle, square, and custom respectively.
-        double base = new FormulaInterpreter().run(Config.formulas[formula], this, pos);
+    private double runModifiers(Iterator<DifficultyModifier> modifierIterator, DDContext context, int formula, Vec3 dstPos){ //Formula can be 0, 1, or 2 with those values representing circle, square, and custom respectively.
+        double base = new FormulaInterpreter().run(this.formulas[formula], this, dstPos);
 
         while(modifierIterator.hasNext()){
             DifficultyModifier modifier = modifierIterator.next();
@@ -117,6 +143,10 @@ public class Origin {
 
         return false;
 
+    }
+
+    public double getRange(){
+        return this.range;
     }
 
 }

@@ -55,6 +55,10 @@ public class DifficultyCalculator {
 
     }
 
+    public static double getOriginDifficultyHere(Origin origin, Vec3 pos, DifficultyType type, RadiusMode rMode, Optional<LivingEntity> entity){
+        return origin.getDifficultyHere(pos, type, rMode, new DDContext(entity.orElse(null)));
+    }
+
 
 
     //Precise control of difficulty with modifiers

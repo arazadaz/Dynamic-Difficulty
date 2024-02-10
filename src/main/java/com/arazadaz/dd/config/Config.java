@@ -1,12 +1,8 @@
 package com.arazadaz.dd.config;
 
 import com.arazadaz.dd.Main;
-import com.arazadaz.dd.api.origins.Origin;
 import com.arazadaz.dd.api.origins.OriginID;
 import com.arazadaz.dd.api.origins.OriginManager;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -14,8 +10,6 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 // An example config class. This is not required, but it's a good idea to have one to keep your config organized.
 // Demonstrates how to use Forge's config APIs
@@ -40,7 +34,7 @@ public class Config
 
     public static final ModConfigSpec.ConfigValue<String> GLOBAL_FORMULAS = BUILDER
             .comment("The default formulas used for Origins if the values weren't specified at their creation. Three formulas: circle, square, and custom in that order")
-            .define("Global formulas", "'distance/range', 'max(abs(dstPos.x-srcPos.x)/range', abs(dstPos.y-srcPos.y)/range, '50/100'");
+            .define("Global formulas", "'(distance/range)*100', 'max(abs(dst.x-src.x)/range*100, abs(dst.y-src.y)/range*100)', '(50/100)*100'");
 
     // a list of strings that are treated as resource locations for items
     private static final ModConfigSpec.ConfigValue<List<? extends String>> USER_DEFINED_ORIGINS = BUILDER

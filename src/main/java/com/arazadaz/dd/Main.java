@@ -2,16 +2,13 @@ package com.arazadaz.dd;
 
 import com.arazadaz.dd.api.origins.OriginID;
 import com.arazadaz.dd.api.origins.OriginManager;
+import com.arazadaz.dd.commands.DDCommands;
 import com.arazadaz.dd.config.Config;
 import com.arazadaz.dd.core.DDVault;
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
@@ -20,6 +17,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 import org.slf4j.Logger;
@@ -44,6 +42,7 @@ public class Main
     {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::clientSetup);
 
 
 
@@ -62,6 +61,11 @@ public class Main
     {
         //Testing
         vault.userOrigins.forEach((udo) -> LOGGER.info("USER_ORIGINS >> {}", udo.origin.pos.toString()));
+    }
+
+    public void clientSetup(FMLClientSetupEvent event)
+    {
+        // Some client setup code
     }
 
 
@@ -83,13 +87,12 @@ public class Main
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents
-    {
+    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class forgeEvents{
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event)
-        {
-            // Some client setup code
+        public static void onCommandsRegistry(final RegisterCommandsEvent event) {
+            //Utility.debugMsg(0,"Dynamic Difficulty: Registering Command Dispatcher");
+            DDCommands.registerCommands(event.getDispatcher());
         }
     }
 }
