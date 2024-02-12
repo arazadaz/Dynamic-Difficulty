@@ -139,28 +139,44 @@ public class DDCommands {
 
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher){
-        dispatcher.register(Commands.literal("getNearestOriginInfo").requires(commandSource ->
-            commandSource.hasPermission(3))
-            .executes(DDCommands::getNearestOriginInfo)
-                .then(Commands.argument("tag", StringArgumentType.word())
-                .executes(DDCommands::getNearestOriginInfo))
-                    .then(Commands.argument("difficulty mode", StringArgumentType.word())
-                    .executes(DDCommands::getNearestOriginInfo))
-                        .then(Commands.argument("radius mode", StringArgumentType.word())
-                        .executes(DDCommands::getNearestOriginInfo)));
+        dispatcher.register(
+                Commands.literal("getNearestOriginInfo")
+                .requires(commandSource -> commandSource.hasPermission(3))
+                .executes(DDCommands::getNearestOriginInfo)
+                .then(
+                            Commands.argument("tag", StringArgumentType.word())
+                            .executes(DDCommands::getNearestOriginInfo)
+                            .then(
+                                        Commands.argument("difficulty mode", StringArgumentType.word())
+                                        .executes(DDCommands::getNearestOriginInfo)
+                                        .then(
+                                                    Commands.argument("radius mode", StringArgumentType.word())
+                                                    .executes(DDCommands::getNearestOriginInfo)
+                                                )
+                                    )
+                        )
+        );
 
 
 
 
-        dispatcher.register((Commands.literal("createOrigin").requires(commandSource ->
-                commandSource.hasPermission(3))
-                .executes(DDCommands::registerNewOrigin))
-                    .then(Commands.argument("tag", StringArgumentType.word())
-                    .executes(DDCommands::registerNewOrigin))
-                        .then(Commands.argument("range", DoubleArgumentType.doubleArg(0))
-                        .executes(DDCommands::registerNewOrigin))
-                            .then(Commands.argument("noCalculationBound", StringArgumentType.word())
-                            .executes(DDCommands::registerNewOrigin)));
+        dispatcher.register(
+                Commands.literal("createOrigin")
+                .requires(commandSource ->  commandSource.hasPermission(3))
+                .executes(DDCommands::registerNewOrigin)
+                .then(
+                            Commands.argument("tag", StringArgumentType.word())
+                            .executes(DDCommands::registerNewOrigin)
+                            .then(
+                                        Commands.argument("range", DoubleArgumentType.doubleArg(0))
+                                        .executes(DDCommands::registerNewOrigin)
+                                        .then(
+                                                    Commands.argument("noCalculationBound", StringArgumentType.word())
+                                                    .executes(DDCommands::registerNewOrigin)
+                                            )
+                                )
+                    )
+        );
     }
 
 }
