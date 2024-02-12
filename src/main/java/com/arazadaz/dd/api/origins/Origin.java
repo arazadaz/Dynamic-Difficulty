@@ -79,7 +79,7 @@ public class Origin {
 
 
     //Bulk of logic goes here
-    public double getDifficultyHere(Vec3 dstPos, DifficultyType type, RadiusMode rMode, DDContext context){
+    public double getDifficultyHere(Vec3 dstPos, DifficultyMode type, RadiusMode rMode, DDContext context){
 
         context.srcOrigin = this;
         context.difficultyType = type;

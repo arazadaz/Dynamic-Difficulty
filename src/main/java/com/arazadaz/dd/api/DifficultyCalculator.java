@@ -9,14 +9,13 @@ import net.minecraft.world.level.Level;
 import com.arazadaz.dd.api.Modes.*;
 import net.minecraft.world.phys.Vec3;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.function.Predicate;
 
 public class DifficultyCalculator {
 
     //Overloaded getters
-    public static double getDifficultyHere(LivingEntity entity, DifficultyType type, RadiusMode rMode){ //Calculates from nearest origin
+    public static double getDifficultyHere(LivingEntity entity, DifficultyMode type, RadiusMode rMode){ //Calculates from nearest origin
 
         Vec3 pos = entity.position();
         Level level = entity.level();
@@ -26,7 +25,7 @@ public class DifficultyCalculator {
     }
 
 
-    public static double getDifficultyHere(Vec3 pos, Level level, DifficultyType type, RadiusMode rMode){ //Calculates from nearest origin
+    public static double getDifficultyHere(Vec3 pos, Level level, DifficultyMode type, RadiusMode rMode){ //Calculates from nearest origin
 
         //Needs to be able to gather origins from all worlds and world-specific origins
 
@@ -34,7 +33,7 @@ public class DifficultyCalculator {
 
     }
 
-    public static double getWorldSpawnDifficultyHere(Vec3 pos, Level level, DifficultyType type, RadiusMode rMode){ //Calculates from spawn origin(returning 0 if disabled)
+    public static double getWorldSpawnDifficultyHere(Vec3 pos, Level level, DifficultyMode type, RadiusMode rMode){ //Calculates from spawn origin(returning 0 if disabled)
 
         return getOriginDifficultyHere(pos, level, type, rMode, "spawn", Optional.empty());
 
@@ -45,7 +44,7 @@ public class DifficultyCalculator {
 
 
     //Primary getter
-    public static double getOriginDifficultyHere(Vec3 pos, Level level, DifficultyType type, RadiusMode rMode, String originTag, Optional<LivingEntity> entity){ //Calculates from nearest origin point of specific type
+    public static double getOriginDifficultyHere(Vec3 pos, Level level, DifficultyMode type, RadiusMode rMode, String originTag, Optional<LivingEntity> entity){ //Calculates from nearest origin point of specific type
 
         String levelID = level.dimension().location().getPath();
 
@@ -55,14 +54,14 @@ public class DifficultyCalculator {
 
     }
 
-    public static double getOriginDifficultyHere(Origin origin, Vec3 pos, DifficultyType type, RadiusMode rMode, Optional<LivingEntity> entity){
+    public static double getOriginDifficultyHere(Origin origin, Vec3 pos, DifficultyMode type, RadiusMode rMode, Optional<LivingEntity> entity){
         return origin.getDifficultyHere(pos, type, rMode, new DDContext(entity.orElse(null)));
     }
 
 
 
     //Precise control of difficulty with modifiers
-    public static void addDifficultyModifier(Predicate<DDContext> predicateCondition, DifficultyType type, ModifierMode modMode, double value){ //Will register to DDvault
+    public static void addDifficultyModifier(Predicate<DDContext> predicateCondition, DifficultyMode type, ModifierMode modMode, double value){ //Will register to DDvault
 
         DifficultyModifier modifier = new DifficultyModifier(predicateCondition, modMode, value);
 

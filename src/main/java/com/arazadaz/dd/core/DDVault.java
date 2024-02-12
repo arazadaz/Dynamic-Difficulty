@@ -1,7 +1,7 @@
 package com.arazadaz.dd.core;
 
 import com.arazadaz.dd.api.DifficultyModifier;
-import com.arazadaz.dd.api.Modes.DifficultyType;
+import com.arazadaz.dd.api.Modes.DifficultyMode;
 import com.arazadaz.dd.api.origins.OriginID;
 
 import java.util.ArrayList;
@@ -18,12 +18,12 @@ public class DDVault {
     public ArrayList<OriginID> userOrigins = new ArrayList<>();
     public OriginID spawnOrigin;
 
-    public HashMap<DifficultyType, ArrayList<DifficultyModifier> > difficultyModifiers = new HashMap<>();
+    public HashMap<DifficultyMode, ArrayList<DifficultyModifier> > difficultyModifiers = new HashMap<>();
 
     private DDVault(){
-        difficultyModifiers.put(DifficultyType.SURFACE, new ArrayList<>());
-        difficultyModifiers.put(DifficultyType.ENVIRONMENTAL, new ArrayList<>());
-        difficultyModifiers.put(DifficultyType.SPECIAL, new ArrayList<>());
+        difficultyModifiers.put(DifficultyMode.SURFACE, new ArrayList<>());
+        difficultyModifiers.put(DifficultyMode.ENVIRONMENTAL, new ArrayList<>());
+        difficultyModifiers.put(DifficultyMode.SPECIAL, new ArrayList<>());
     }
 
     public static DDVault createDDVault(){

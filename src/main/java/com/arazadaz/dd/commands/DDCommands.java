@@ -1,12 +1,14 @@
 package com.arazadaz.dd.commands;
 
 import com.arazadaz.dd.api.DifficultyCalculator;
-import com.arazadaz.dd.api.Modes;
+import com.arazadaz.dd.api.Modes.DifficultyMode;
+import com.arazadaz.dd.api.Modes.RadiusMode;
 import com.arazadaz.dd.api.origins.Origin;
 import com.arazadaz.dd.api.origins.OriginManager;
 import com.arazadaz.dd.config.Config;
 import com.arazadaz.dd.utilities.DDGeneralUtility;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -22,19 +24,66 @@ public class DDCommands {
 
         CommandSourceStack src = context.getSource();
         String world = src.getLevel().dimension().location().getPath();
+        DifficultyMode difficultyMode = DifficultyMode.SURFACE;
+        RadiusMode rMode = RadiusMode.CIRCLE;
         Origin origin;
 
         int numArguments = context.getInput().split(" ").length -1;
-        if(numArguments==1){
-            String type = context.getArgument("type", String.class);
+        if(numArguments == 1){
+            String tag = context.getArgument("tag", String.class);
+            origin = OriginManager.getNearestOrigin(world, tag, src.getPosition());
+        }else if(numArguments == 2){
+            String tag = context.getArgument("tag", String.class);
+            origin = OriginManager.getNearestOrigin(world, tag, src.getPosition());
+
+            String difficultyModeString = context.getArgument("difficulty mode", String.class);
+            switch(difficultyModeString){
+                case "surface" ->{
+                    difficultyMode = DifficultyMode.SURFACE;
+                }
+                case "environmental" -> {
+                    difficultyMode = DifficultyMode.ENVIRONMENTAL;
+                }
+                case "special" -> {
+                    difficultyMode = DifficultyMode.SPECIAL;
+                }
+            }
+        }else if(numArguments == 3){
+            String type = context.getArgument("tag", String.class);
             origin = OriginManager.getNearestOrigin(world, type, src.getPosition());
+
+            String difficultyModeString = context.getArgument("difficulty mode", String.class);
+            switch(difficultyModeString){
+                case "surface" ->{
+                    difficultyMode = DifficultyMode.SURFACE;
+                }
+                case "environmental" -> {
+                    difficultyMode = DifficultyMode.ENVIRONMENTAL;
+                }
+                case "special" -> {
+                    difficultyMode = DifficultyMode.SPECIAL;
+                }
+            }
+
+            String radiusModeString = context.getArgument("radius mode", String.class);
+            switch(radiusModeString){
+                case "circle" ->{
+                    rMode = RadiusMode.CIRCLE;
+                }
+                case "square" -> {
+                    rMode = RadiusMode.SQUARE;
+                }
+                case "custom" -> {
+                    rMode = RadiusMode.CUSTOM;
+                }
+            }
         }else{
             origin = OriginManager.getNearestOrigin(world, "default", src.getPosition());
         }
 
 
 
-        double calculatedDifficulty = DifficultyCalculator.getOriginDifficultyHere(origin, src.getPosition(), Modes.DifficultyType.SURFACE, Modes.RadiusMode.SQUARE, Optional.empty());
+        double calculatedDifficulty = DifficultyCalculator.getOriginDifficultyHere(origin, src.getPosition(), difficultyMode, rMode, Optional.empty());
         DecimalFormat df = new DecimalFormat("###.##");
 
         String chatMessage = "Origin Info\n"
@@ -57,8 +106,19 @@ public class DDCommands {
 
         int numArguments = context.getInput().split(" ").length -1;
         if(numArguments == 1){
-            String type = context.getArgument("type", String.class);
-            origin = new Origin(src.getPosition(), Config.formulas, new String[]{type}, Config.range, false, 2, world);
+            String tag = context.getArgument("tag", String.class);
+            origin = new Origin(src.getPosition(), Config.formulas, new String[]{tag}, Config.range, false, 2, world);
+        }else if(numArguments == 2){
+            String tag = context.getArgument("tag", String.class);
+            double range = context.getArgument("range", Double.class);
+
+            origin = new Origin(src.getPosition(), Config.formulas, new String[]{tag}, range, false, 2, world);
+        }else if(numArguments == 3){
+            String tag = context.getArgument("tag", String.class);
+            double range = context.getArgument("range", Double.class);
+            boolean noCalcBound = Boolean.parseBoolean(context.getArgument("noCalculationBound", String.class));
+
+            origin = new Origin(src.getPosition(), Config.formulas, new String[]{tag}, range, noCalcBound, 2, world);
         }else{
             origin = new Origin(src.getPosition(), Config.formulas, new String[]{}, Config.range, false, 2, world);
         }
@@ -82,8 +142,12 @@ public class DDCommands {
         dispatcher.register(Commands.literal("getNearestOriginInfo").requires(commandSource ->
             commandSource.hasPermission(3))
             .executes(DDCommands::getNearestOriginInfo)
-                .then(Commands.argument("type", StringArgumentType.word())
-                .executes(DDCommands::getNearestOriginInfo)));
+                .then(Commands.argument("tag", StringArgumentType.word())
+                .executes(DDCommands::getNearestOriginInfo))
+                    .then(Commands.argument("difficulty mode", StringArgumentType.word())
+                    .executes(DDCommands::getNearestOriginInfo))
+                        .then(Commands.argument("radius mode", StringArgumentType.word())
+                        .executes(DDCommands::getNearestOriginInfo)));
 
 
 
@@ -91,8 +155,12 @@ public class DDCommands {
         dispatcher.register((Commands.literal("createOrigin").requires(commandSource ->
                 commandSource.hasPermission(3))
                 .executes(DDCommands::registerNewOrigin))
-                    .then(Commands.argument("type", StringArgumentType.word())
-                    .executes(DDCommands::registerNewOrigin)));
+                    .then(Commands.argument("tag", StringArgumentType.word())
+                    .executes(DDCommands::registerNewOrigin))
+                        .then(Commands.argument("range", DoubleArgumentType.doubleArg(0))
+                        .executes(DDCommands::registerNewOrigin))
+                            .then(Commands.argument("noCalculationBound", StringArgumentType.word())
+                            .executes(DDCommands::registerNewOrigin)));
     }
 
 }

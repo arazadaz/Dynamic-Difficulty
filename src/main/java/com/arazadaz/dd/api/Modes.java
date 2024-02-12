@@ -8,7 +8,7 @@ public class Modes {
         CUSTOM
     }
 
-    public enum DifficultyType {
+    public enum DifficultyMode {
         ENVIRONMENTAL,
         SURFACE,
         SPECIAL
