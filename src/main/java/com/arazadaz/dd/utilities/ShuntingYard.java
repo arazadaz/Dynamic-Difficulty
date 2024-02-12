@@ -123,7 +123,6 @@ public class ShuntingYard {
                     output += c;
                     output +=  ' ';
                 }else{
-                    stack.push(c);
                     closuresNeeded += 1;
                 }
             }
