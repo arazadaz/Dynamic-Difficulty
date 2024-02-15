@@ -5,15 +5,17 @@ import com.arazadaz.dd.config.Config;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 public class OriginManager {
 
     private static HashMap<String, ArrayList<Origin>> originMap = new HashMap<>(); //Mapping of origins to each world/all;
+    public static Collection<String> knownTags = new HashSet<>();
 
+    static{
+        knownTags.add("default");
+        knownTags.add("dynamic");
+    }
 
 
     public static OriginID registerOrigin(Vec3 pos, String... tags){ //basic, less control
@@ -45,6 +47,7 @@ public class OriginManager {
         Origin newOrigin = new Origin(pos, formulas, tags, range, noCalculationBound, defaultTag, world);
         originsList.add(newOrigin);
         originMap.put(world, originsList);
+        knownTags.addAll(Arrays.asList(tags));
         return new OriginID(world, newOrigin);
     }
 

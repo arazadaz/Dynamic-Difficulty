@@ -3,9 +3,12 @@ package com.arazadaz.dd;
 import com.arazadaz.dd.api.origins.OriginID;
 import com.arazadaz.dd.api.origins.OriginManager;
 import com.arazadaz.dd.commands.DDCommands;
+import com.arazadaz.dd.commands.OriginTagArgumentType;
 import com.arazadaz.dd.config.Config;
 import com.arazadaz.dd.core.DDVault;
 import com.mojang.logging.LogUtils;
+import net.minecraft.commands.synchronization.ArgumentTypeInfos;
+import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.world.phys.Vec3;
@@ -20,6 +23,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
+import net.neoforged.neoforge.server.command.ModIdArgument;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -55,6 +59,9 @@ public class Main
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        //Register our OriginTagArgumentType
+        ArgumentTypeInfos.registerByClass(OriginTagArgumentType.class, SingletonArgumentInfo.contextFree(OriginTagArgumentType::tag));
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

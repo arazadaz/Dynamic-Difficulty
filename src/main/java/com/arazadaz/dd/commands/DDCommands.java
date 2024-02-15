@@ -144,16 +144,56 @@ public class DDCommands {
                 .requires(commandSource -> commandSource.hasPermission(3))
                 .executes(DDCommands::getNearestOriginInfo)
                 .then(
-                            Commands.argument("tag", StringArgumentType.word())
+                            Commands.argument("tag", OriginTagArgumentType.tag())
                             .executes(DDCommands::getNearestOriginInfo)
                             .then(
-                                        Commands.argument("difficulty mode", StringArgumentType.word())
+                                        Commands.literal("surface")
                                         .executes(DDCommands::getNearestOriginInfo)
                                         .then(
-                                                    Commands.argument("radius mode", StringArgumentType.word())
+                                                    Commands.literal("circle")
                                                     .executes(DDCommands::getNearestOriginInfo)
-                                                )
-                                    )
+                                        )
+                                        .then(
+                                                    Commands.literal("square")
+                                                    .executes(DDCommands::getNearestOriginInfo)
+                                        )
+                                        .then(
+                                                    Commands.literal("custom")
+                                                    .executes(DDCommands::getNearestOriginInfo)
+                                        )
+                            )
+                            .then(
+                                        Commands.literal("environmental")
+                                        .executes(DDCommands::getNearestOriginInfo)
+                                        .then(
+                                                    Commands.literal("circle")
+                                                    .executes(DDCommands::getNearestOriginInfo)
+                                        )
+                                        .then(
+                                                    Commands.literal("square")
+                                                    .executes(DDCommands::getNearestOriginInfo)
+                                        )
+                                        .then(
+                                                    Commands.literal("custom")
+                                                    .executes(DDCommands::getNearestOriginInfo)
+                                        )
+                            )
+                            .then(
+                                        Commands.literal("special")
+                                        .executes(DDCommands::getNearestOriginInfo)
+                                        .then(
+                                                Commands.literal("circle")
+                                                .executes(DDCommands::getNearestOriginInfo)
+                                        )
+                                        .then(
+                                                 Commands.literal("square")
+                                                    .executes(DDCommands::getNearestOriginInfo)
+                                        )
+                                        .then(
+                                                    Commands.literal("custom")
+                                                    .executes(DDCommands::getNearestOriginInfo)
+                                        )
+                            )
                         )
         );
 
