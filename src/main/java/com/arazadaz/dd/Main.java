@@ -9,12 +9,14 @@ import com.arazadaz.dd.core.DDVault;
 import com.mojang.logging.LogUtils;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.commands.synchronization.SingletonArgumentInfo;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.LevelData;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -22,11 +24,9 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-
-import net.neoforged.neoforge.server.command.ModIdArgument;
 import org.slf4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
+// The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Main.MODID)
 public class Main
 {
@@ -42,7 +42,7 @@ public class Main
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
-    public Main(IEventBus modEventBus)
+    public Main(IEventBus modEventBus, ModContainer modContainer)
     {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -58,7 +58,7 @@ public class Main
 
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         //Register our OriginTagArgumentType
         ArgumentTypeInfos.registerByClass(OriginTagArgumentType.class, SingletonArgumentInfo.contextFree(OriginTagArgumentType::tag));
@@ -83,7 +83,9 @@ public class Main
     {
         LevelData data = event.getServer().getLevel(Level.OVERWORLD).getLevel().getLevelData();
 
-        Vec3 spawnVec = new Vec3(data.getXSpawn(), data.getYSpawn(), data.getZSpawn());
+        BlockPos spawn = data.getSpawnPos();
+
+        Vec3 spawnVec = new Vec3(spawn.getX(), spawn.getY(), spawn.getZ());
 
         if(Config.useSpawnOrigin) {
             OriginID spawnOrigin = OriginManager.registerOrigin(spawnVec, "spawn");
@@ -94,8 +96,8 @@ public class Main
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-    public static class forgeEvents{
+    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.GAME)
+    public static class gameEvents{
         @SubscribeEvent
         public static void onCommandsRegistry(final RegisterCommandsEvent event) {
             //Utility.debugMsg(0,"Dynamic Difficulty: Registering Command Dispatcher");
